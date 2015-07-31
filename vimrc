@@ -13,8 +13,6 @@ Plugin 'gmarik/Vundle.vim'              " let Vundle manage Vundle, required
 "---------=== Code/project navigation ===-------------
 Plugin 'scrooloose/nerdtree'            " Project and file navigation
 Plugin 'Xuyuanp/nerdtree-git-plugin'    " Git for nerdtree
-" Plugin 'majutsushi/tagbar'            " Class/module browser
-
 
 "---------=== Themes ===-------------
 Plugin 'altercation/vim-colors-solarized'
@@ -23,9 +21,8 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'bling/vim-airline'              " Lean & mean status/tabline for vim
 Plugin 'bling/vim-bufferline'           " This for airline to show buffers
 Plugin 'tpope/vim-fugitive'             " Implementing git
-Plugin 'Shougo/unite.vim'               " ?
+Plugin 'Shougo/unite.vim'               " Navigation between files and buffers
 Plugin 'fisadev/FixedTaskList.vim'      " Pending tasks list
-Plugin 'rosenfeld/conque-term'          " Consoles as buffers
 Plugin 'tpope/vim-surround'             " Parentheses, brackets, quotes, XML tags, and more
 Plugin 'terryma/vim-multiple-cursors'   " Parentheses, brackets, quotes, XML tags, and more
 Plugin 'vim-scripts/tComment'           " For comments
@@ -37,6 +34,8 @@ Plugin 'MarcWeber/vim-addon-mw-utils'   " dependencies #1
 Plugin 'tomtom/tlib_vim'                " dependencies #2
 Plugin 'honza/vim-snippets'             " snippets repo
 Plugin 'mattn/emmet-vim'
+
+Plugin 'Valloric/YouCompleteMe'         " VIM code autocompletion
 
 "---------------=== Languages support ===-------------
 " --- Python ---
@@ -54,18 +53,14 @@ Plugin 'maksimr/vim-jsbeautify'
 Plugin 'einars/js-beautify'
 
 call vundle#end()                       " required
-" TagBar settings (for now I'm not using it, that's why it's commented)
-" map <F4> :TagbarToggle<CR>
-" let g:tagbar_autofocus = 0 " 
 
 " NerdTree settings
 map <F3> :NERDTreeToggle<CR>
-let NERDTreeIgnore=['\~$', '\.pyc$', '\.pyo$', '\.class$', 'pip-log\.txt$', '\.o$', '\.swn$', '\.swo$', '\.swm$', '\.swp$']  
+let NERDTreeIgnore=['\~$', '\.pyc$', '\.pyo$', '\.class$', '\.o$']  
 let NERDTreeShowHidden=1
 
 " TaskList settings
 map <F2> :TaskList<CR>
-call togglebg#map("<F5>")
 
 " use system's clipboard, using this you can, but for this you must have gVim
 " to get access X11 clipboard
@@ -87,14 +82,15 @@ set ai
 set showmatch 
 set hlsearch
 set incsearch
-"syntax enable
-"set background=dark
-"colorscheme solarized
 colorscheme flattown
+
+" " This to change autocomplete to Ctrl+Space
+" inoremap <C-@> <C-x><C-o>
+" set completeopt-=preview
 
 " More useful command-line completion
 set wildmenu
-"Auto-completion menu
+" Command Auto-completion menu
 set wildmode=list:longest
 
 " SnipMate
@@ -109,7 +105,6 @@ autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 
 " Vim-Airline settings
 let g:airline_enable_fugitive=1
-let g:airline_enable_syntastic=1
 let g:airline_enable_bufferline=1
 let g:airline_theme='understated'
 let g:airline_enable_syntastic  = 1
@@ -120,9 +115,7 @@ let g:airline_linecolumn_prefix = '¶ '
 let g:airline_branch_prefix = '⎇ '
 let g:airline_paste_symbol = 'ρ'
 
-
-" Pymod
-let g:pymode_options_max_line_length = 119
-let g:pymode_folding = 0
-let g:pymode_lint_on_fly = 1 
-let g:pymode_lint_unmodified = 1 
+" PyMode
+let g:pymode_rope = 0
+let g:pymode_rope_completion = 0
+let g:pymode_rope_completion_on_dot = 0
