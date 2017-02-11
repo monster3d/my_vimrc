@@ -20,8 +20,7 @@ Plugin 'blerins/flattown'
 Plugin 'vim-airline/vim-airline-themes'
 
 "------------------=== Other ===----------------------
-Plugin 'bling/vim-airline'              " Lean & mean status/tabline for vim
-Plugin 'bling/vim-bufferline'           " This for airline to show buffers
+Plugin 'itchyny/lightline.vim'          " VIM Airline alternative
 Plugin 'tpope/vim-fugitive'             " Implementing git
 Plugin 'Shougo/unite.vim'               " Navigation between files and buffers
 Plugin 'tpope/vim-surround'             " Parentheses, brackets, quotes, XML tags, and more
@@ -55,7 +54,7 @@ call vundle#end()                       " required
 
 " NerdTree settings
 map <F3> :NERDTreeToggle<CR>
-let NERDTreeIgnore=['\~$', '\.pyc$', '\.pyo$', '\.class$', '\.o$']  
+let NERDTreeIgnore=['\~$', '\.sw*', '\.py*', '\.class$', '\.o$']  
 let NERDTreeShowHidden=1
 
 " use system's clipboard, using this you can, but for this you must have gVim
@@ -89,19 +88,25 @@ let g:snippets_dir = "~/.vim/vim-snippets/snippets"
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
-" Vim-Airline settings
-let g:airline_enable_fugitive=1
-let g:airline_enable_bufferline=1
-let g:airline_theme='understated'
-let g:airline_enable_syntastic  = 1
-let g:airline#extensions#tabline#enabled = 1 
-let g:airline_powerline_fonts = 1
-
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '◀'
-let g:airline_linecolumn_prefix = '¶ '
-let g:airline_branch_prefix = '⎇ '
-let g:airline_paste_symbol = 'ρ'
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component': {
+      \   'readonly': '%{&filetype=="help"?"":&readonly?"|":""}',
+      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+      \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+      \ },
+      \ 'component_visible_condition': {
+      \   'readonly': '(&filetype!="help"&& &readonly)',
+      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+      \ },
+      \ 'separator': { 'left': '|', 'right': '|' },
+      \ 'subseparator': { 'left': '|', 'right': '|' }
+      \ }
 
 
 " PyMode
@@ -115,17 +120,14 @@ let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
 " better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+" let g:UltiSnipsExpandTrigger = "<tab>"
+" let g:UltiSnipsJumpForwardTrigger = "<tab>"
+" let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 " If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
+" let g:UltiSnipsEditSplit="vertical"
 
 " GoImports
 map <F4> :GoImports<CR>
-imap <C-l> <ESC>:bn<CR>
-imap <C-k> <ESC>:bp<CR>
-map <C-l> :bn<CR>
 map <C-k> :bp<CR>
 map <F2> :Unite buffer<CR>
